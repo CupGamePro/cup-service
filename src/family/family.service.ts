@@ -1,7 +1,7 @@
 import { PaginationDto } from './../common/dto/pagination-dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOneOptions } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateFamilyDto } from './dto/create-family.dto';
 import { UpdateFamilyDto } from './dto/update-family.dto';
 import { Family } from './entities/family.entity';
@@ -30,14 +30,14 @@ export class FamilyService {
   async findAll({
     pageSize,
     page,
-  }: PaginationDto): Promise<{ data: Family[]; count: number }> {
+  }: PaginationDto): Promise<{ content: Family[]; total: number }> {
     const [data, count] = await this.familyRepository.findAndCount({
       order: { createTime: 'DESC' },
       skip: (page - 1) * pageSize,
       take: pageSize * 1,
       cache: true,
     });
-    return { data, count };
+    return { content: data, total: count };
   }
 
   /**
@@ -46,8 +46,11 @@ export class FamilyService {
    * @returns
    */
   async findOne(id: string): Promise<Family> {
-    const options: FindOneOptions<Family> = { where: { id } };
-    return await this.familyRepository.findOne(options);
+    const result = await this.familyRepository.findOne({ where: { id } });
+    if (!result) {
+      throw new NotFoundException('查询不到此记录');
+    }
+    return result;
   }
 
   /**
@@ -57,6 +60,10 @@ export class FamilyService {
    * @returns
    */
   async update(id: string, updateFamilyDto: UpdateFamilyDto) {
+    const result = await this.familyRepository.findOne({ where: { id } });
+    if (!result) {
+      throw new NotFoundException('更新失败');
+    }
     return await this.familyRepository.update(id, updateFamilyDto);
   }
 
@@ -66,6 +73,10 @@ export class FamilyService {
    * @returns
    */
   async remove(id: string) {
+    const result = await this.familyRepository.findOne({ where: { id } });
+    if (!result) {
+      throw new NotFoundException('查询不到此记录');
+    }
     return await this.familyRepository.update(id, { isDelete: '1' });
   }
 }

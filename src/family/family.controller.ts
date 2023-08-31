@@ -19,7 +19,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 export class FamilyController {
   constructor(private readonly familyService: FamilyService) {}
 
-  @ApiOperation({ summary: '添加家族' })
+  @ApiOperation({ summary: '添加家族记录' })
   @Post()
   create(@Body() createFamilyDto: CreateFamilyDto) {
     return this.familyService.create(createFamilyDto);
@@ -28,11 +28,7 @@ export class FamilyController {
   @ApiOperation({ summary: '分页查询' })
   @Get()
   async findAll(@Query() query: PaginationDto) {
-    const { data, count } = await this.familyService.findAll(query);
-    return {
-      content: data,
-      total: count,
-    };
+    return await this.familyService.findAll(query);
   }
 
   @ApiOperation({ summary: '查询详情' })
@@ -41,13 +37,13 @@ export class FamilyController {
     return this.familyService.findOne(id);
   }
 
-  @ApiOperation({ summary: '修改家族' })
+  @ApiOperation({ summary: '修改记录' })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFamilyDto: UpdateFamilyDto) {
     return this.familyService.update(id, updateFamilyDto);
   }
 
-  @ApiOperation({ summary: '删除家族' })
+  @ApiOperation({ summary: '删除记录' })
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.familyService.remove(id);

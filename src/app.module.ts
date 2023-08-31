@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MenuModule } from './menu/menu.module';
 import { CommonModule } from './common/common.module';
 import { FamilyModule } from './family/family.module';
+import { RedemptionCodeModule } from './redemption-code/redemption-code.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { FamilyModule } from './family/family.module';
     MenuModule,
     CommonModule,
     FamilyModule,
+    RedemptionCodeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

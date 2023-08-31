@@ -4,10 +4,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class UpdateFamilyDto extends PartialType(CreateFamilyDto) {
-  @ApiProperty({ description: '家族名称' })
-  @IsNotEmpty()
-  id: string;
-
   @ApiProperty({ description: '家族名称', example: '一曲相思' })
   @IsNotEmpty()
   name: string;

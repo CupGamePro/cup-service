@@ -53,7 +53,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     response.status(statusCode).json({
       code: statusCode,
-      message: message && message[0],
+      message: message || message[0],
       errors: errors || 'Internal server error',
     });
   }
