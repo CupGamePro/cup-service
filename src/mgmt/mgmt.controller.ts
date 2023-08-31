@@ -10,7 +10,9 @@ import {
 import { MgmtService } from './mgmt.service';
 import { CreateMgmtDto } from './dto/create-mgmt.dto';
 import { UpdateMgmtDto } from './dto/update-mgmt.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('系统管理')
 @Controller('mgmt')
 export class MgmtController {
   constructor(private readonly mgmtService: MgmtService) {}

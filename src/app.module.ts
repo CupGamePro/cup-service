@@ -5,6 +5,7 @@ import { MgmtModule } from './mgmt/mgmt.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MenuModule } from './menu/menu.module';
 import { CommonModule } from './common/common.module';
+import { FamilyModule } from './family/family.module';
 
 @Module({
   imports: [
@@ -12,10 +13,10 @@ import { CommonModule } from './common/common.module';
     TypeOrmModule.forRoot({
       type: 'mysql', //数据库类型
       username: 'root', //账号
-      password: 'hundun', //密码
+      password: '119728@zcw', //密码
       host: '1.12.181.98', //host
-      port: 3306, //
-      database: 'game_plat', //库名
+      port: 13306, //
+      database: 'games', //库名
       entities: [__dirname + '/**/*.entity{.ts,.js}'], //实体文件
       synchronize: true, //synchronize字段代表是否自动将实体类同步到数据库
       retryDelay: 500, //重试连接数据库间隔
@@ -24,6 +25,7 @@ import { CommonModule } from './common/common.module';
     }),
     MenuModule,
     CommonModule,
+    FamilyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

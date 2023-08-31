@@ -16,6 +16,7 @@ import {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   generateDocument(app);
 
   app.useGlobalInterceptors(new GlobalResponseInterceptor());
