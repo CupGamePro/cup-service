@@ -1,3 +1,4 @@
+import { Family } from 'src/yulong/entities/family.entity';
 import { PaginationDto } from './../common/dto/pagination-dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,7 +24,7 @@ export class RedemptionCodeService {
   }
 
   /**
-   * 分页查询所有家族
+   * 分页查询所有记录
    * @param param0
    * @returns
    */
@@ -33,6 +34,8 @@ export class RedemptionCodeService {
   }: PaginationDto): Promise<{ content: RedemptionCode[]; total: number }> {
     const [data, count] = await this.redemptionCodeRepository.findAndCount({
       order: { createTime: 'DESC' },
+      relations: ['family'],
+      where: { isDelete: 0 },
       skip: (page - 1) * pageSize,
       take: pageSize * 1,
       cache: true,
@@ -86,6 +89,6 @@ export class RedemptionCodeService {
     if (!result) {
       throw new NotFoundException('查询不到此记录');
     }
-    return await this.redemptionCodeRepository.update(id, { isDelete: '1' });
+    return await this.redemptionCodeRepository.update(id, { isDelete: 1 });
   }
 }

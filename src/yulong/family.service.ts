@@ -33,6 +33,7 @@ export class FamilyService {
   }: PaginationDto): Promise<{ content: Family[]; total: number }> {
     const [data, count] = await this.familyRepository.findAndCount({
       order: { createTime: 'DESC' },
+      where: { isDelete: 0 },
       skip: (page - 1) * pageSize,
       take: pageSize * 1,
       cache: true,
@@ -77,6 +78,6 @@ export class FamilyService {
     if (!result) {
       throw new NotFoundException('查询不到此记录');
     }
-    return await this.familyRepository.update(id, { isDelete: '1' });
+    return await this.familyRepository.update(id, { isDelete: 1 });
   }
 }

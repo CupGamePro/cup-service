@@ -1,11 +1,9 @@
+import { Family } from 'src/yulong/entities/family.entity';
+import { CreateFamilyDto } from '../dto/create-family.dto';
 import { CommonEntity } from 'src/common/entities/common.entity';
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
-
+import { Column, Entity, ManyToOne } from 'typeorm';
 @Entity()
 export class RedemptionCode extends CommonEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
   @Column()
   name: string;
 
@@ -17,4 +15,7 @@ export class RedemptionCode extends CommonEntity {
 
   @Column()
   status: string;
+
+  @ManyToOne(() => Family, (famliy) => famliy.redemp)
+  family: Family;
 }

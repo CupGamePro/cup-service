@@ -1,11 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { RedemptionCode } from 'src/yulong/entities/redemption-code.entity';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { CommonEntity } from 'src/common/entities/common.entity';
-
 @Entity()
 export class Family extends CommonEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
   @Column()
   name: string;
 
@@ -17,4 +14,7 @@ export class Family extends CommonEntity {
 
   @Column()
   status: string;
+
+  @OneToMany(() => RedemptionCode, (redemp) => redemp.family)
+  redemp: RedemptionCode[];
 }
