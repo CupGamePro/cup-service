@@ -8,10 +8,7 @@ import { FamilyController } from './family.controller';
 import { Family } from './entities/family.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([RedemptionCode, Family]),
-    TypeOrmModule.forFeature([Family]),
-  ],
+  imports: [TypeOrmModule.forFeature([RedemptionCode, Family])],
   controllers: [RedemptionCodeController, FamilyController],
   providers: [RedemptionCodeService, FamilyService],
 })
