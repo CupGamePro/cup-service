@@ -14,7 +14,7 @@ export class CreateFamilyDto {
   @IsNotEmpty()
   serve: string;
 
-  @ApiProperty({ description: '状态', example: '开启中' })
+  @ApiProperty({ description: '状态', example: 1 })
   @IsNotEmpty()
-  status: string;
+  status: number;
 }

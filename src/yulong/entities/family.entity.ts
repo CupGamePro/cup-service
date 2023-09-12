@@ -13,7 +13,7 @@ export class Family extends CommonEntity {
   serve: string;
 
   @Column()
-  status: string;
+  status: number;
 
   @OneToMany(() => RedemptionCode, (redemp) => redemp.family)
   redemp: RedemptionCode[];

@@ -26,9 +26,15 @@ export class FamilyController {
   }
 
   @ApiOperation({ summary: '分页查询' })
-  @Get()
-  async findAll(@Query() query: PaginationDto) {
-    return await this.familyService.findAll(query);
+  @Post('/list')
+  async findAll(@Body() family: PaginationDto) {
+    return await this.familyService.findAll(family);
+  }
+
+  @ApiOperation({ summary: '查询所有区服' })
+  @Get('/servers')
+  async getAllServer() {
+    return await this.familyService.getAllServer();
   }
 
   @ApiOperation({ summary: '查询详情' })

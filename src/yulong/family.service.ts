@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateFamilyDto } from './dto/create-family.dto';
 import { UpdateFamilyDto } from './dto/update-family.dto';
 import { Family } from './entities/family.entity';
+import { EnumCommonDto } from './../common/dto/enum-common.dto';
 
 @Injectable()
 export class FamilyService {
@@ -30,15 +31,33 @@ export class FamilyService {
   async findAll({
     pageSize,
     page,
+    condition,
   }: PaginationDto): Promise<{ content: Family[]; total: number }> {
+    console.log(condition);
+
     const [data, count] = await this.familyRepository.findAndCount({
       order: { createTime: 'DESC' },
-      where: { isDelete: 0 },
+      where: { isDelete: 0, ...condition },
       skip: (page - 1) * pageSize,
       take: pageSize * 1,
       cache: true,
     });
     return { content: data, total: count };
+  }
+
+  async getAllServer(): Promise<EnumCommonDto[]> {
+    const servers = await this.familyRepository
+      .createQueryBuilder('family')
+      .select(['family.serve'])
+      .getMany();
+
+    const result = servers.map((e) => {
+      return {
+        name: e.serve,
+        value: e.serve,
+      };
+    });
+    return result;
   }
 
   /**

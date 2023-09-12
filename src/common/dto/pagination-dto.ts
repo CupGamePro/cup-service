@@ -32,4 +32,14 @@ export class PaginationDto {
   @Min(0)
   @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
   page = 1;
+
+  @ApiPropertyOptional({
+    description: '过滤条件',
+    type: Object,
+    example: {
+      name: '',
+    },
+  })
+  @IsOptional()
+  condition = null;
 }
