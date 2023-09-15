@@ -1,6 +1,11 @@
 import { Family } from 'src/yulong/entities/family.entity';
 import { PaginationDto } from './../common/dto/pagination-dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateRedemptionCodeDto } from './dto/create-redemption-code.dto';
@@ -20,6 +25,17 @@ export class RedemptionCodeService {
    * @returns
    */
   async create(createRedemptionCodeDto: CreateRedemptionCodeDto) {
+    const { code } = createRedemptionCodeDto;
+    const result = await this.redemptionCodeRepository.findOne({
+      where: { code },
+    });
+    if (result) {
+      throw new HttpException(
+        `${code}兑换码已存在，请勿重复提交`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+      // throw new NotFoundException(`${code}兑换码已存在，请勿重复提交`);
+    }
     return await this.redemptionCodeRepository.save(createRedemptionCodeDto);
   }
 
@@ -48,9 +64,9 @@ export class RedemptionCodeService {
    * @param id
    * @returns
    */
-  async findOne(id: string): Promise<RedemptionCode> {
+  async findOne(code: string): Promise<RedemptionCode> {
     const result = await this.redemptionCodeRepository.findOne({
-      where: { id },
+      where: { code },
     });
     if (!result) {
       throw new NotFoundException('查询不到此记录');

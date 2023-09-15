@@ -32,9 +32,9 @@ export class RedemptionCodeController {
   }
 
   @ApiOperation({ summary: '查询详情' })
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.redemptionCodeService.findOne(id);
+  @Get(':code')
+  async findOne(@Param('code') code: string) {
+    return await this.redemptionCodeService.findOne(code);
   }
 
   @ApiOperation({ summary: '修改记录' })

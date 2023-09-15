@@ -12,14 +12,9 @@ import {
   CallHandler,
   ExceptionFilter,
   ArgumentsHost,
-  HttpException,
-  HttpStatus,
-  BadRequestException,
-  Catch,
 } from '@nestjs/common';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { BaseExceptionFilter } from '@nestjs/core';
 
 @Injectable()
 export class GlobalResponseInterceptor implements NestInterceptor {
@@ -51,10 +46,18 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     const { message, errors, statusCode } = exception.getResponse();
 
-    response.status(statusCode).json({
-      code: statusCode,
-      message: message || message[0],
-      errors: errors || 'Internal server error',
-    });
+    if (message) {
+      response.status(statusCode).json({
+        code: statusCode,
+        message: message || message[0],
+        errors: errors || 'Internal server error',
+      });
+    } else {
+      response.status(500).json({
+        code: 500,
+        message: exception.getResponse(),
+        errors: 'Internal server error',
+      });
+    }
   }
 }

@@ -20,6 +20,11 @@ export class FamilyService {
    * @returns
    */
   async create(createFamilyDto: CreateFamilyDto) {
+    const { code } = createFamilyDto;
+    const result = await this.familyRepository.findOne({ where: { code } });
+    if (result) {
+      throw new NotFoundException(`${code}编号已存在`);
+    }
     return await this.familyRepository.save(createFamilyDto);
   }
 
@@ -33,8 +38,6 @@ export class FamilyService {
     page,
     condition,
   }: PaginationDto): Promise<{ content: Family[]; total: number }> {
-    console.log(condition);
-
     const [data, count] = await this.familyRepository.findAndCount({
       order: { createTime: 'DESC' },
       where: { isDelete: 0, ...condition },
@@ -45,6 +48,24 @@ export class FamilyService {
     return { content: data, total: count };
   }
 
+  /**
+   * 查询所有家族（按编号去重）
+   * @returns
+   */
+  async getAllFamilies(): Promise<Family[]> {
+    const families = await this.familyRepository
+      .createQueryBuilder('family')
+      .select()
+      .where('family.status = :status', { status: 1 })
+      .andWhere('family.isDelete = :isDelete', { isDelete: 0 })
+      .getMany();
+    return families;
+  }
+
+  /**
+   * 查询所有区服
+   * @returns
+   */
   async getAllServer(): Promise<EnumCommonDto[]> {
     const servers = await this.familyRepository
       .createQueryBuilder('family')

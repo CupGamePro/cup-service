@@ -31,6 +31,12 @@ export class FamilyController {
     return await this.familyService.findAll(family);
   }
 
+  @ApiOperation({ summary: '查询所有家族（按编号去重）' })
+  @Get('/families')
+  async getAllFamilies() {
+    return await this.familyService.getAllFamilies();
+  }
+
   @ApiOperation({ summary: '查询所有区服' })
   @Get('/servers')
   async getAllServer() {
