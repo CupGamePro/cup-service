@@ -44,11 +44,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     console.log(exception);
 
-    const { message, errors, statusCode } = exception.getResponse();
+    const { message, errors } = exception.getResponse();
 
     if (message) {
-      response.status(statusCode).json({
-        code: statusCode,
+      response.status(500).json({
+        code: 500,
         message: message || message[0],
         errors: errors || 'Internal server error',
       });

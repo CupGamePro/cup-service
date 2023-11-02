@@ -1,5 +1,10 @@
 import { PaginationDto } from './../common/dto/pagination-dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateFamilyDto } from './dto/create-family.dto';
@@ -23,7 +28,10 @@ export class FamilyService {
     const { code } = createFamilyDto;
     const result = await this.familyRepository.findOne({ where: { code } });
     if (result) {
-      throw new NotFoundException(`${code}编号已存在`);
+      throw new HttpException(
+        `${code}编号已存在，请勿重复提交`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
     return await this.familyRepository.save(createFamilyDto);
   }

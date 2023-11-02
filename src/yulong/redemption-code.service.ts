@@ -1,4 +1,3 @@
-import { Family } from 'src/yulong/entities/family.entity';
 import { PaginationDto } from './../common/dto/pagination-dto';
 import {
   HttpException,
@@ -34,7 +33,6 @@ export class RedemptionCodeService {
         `${code}兑换码已存在，请勿重复提交`,
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
-      // throw new NotFoundException(`${code}兑换码已存在，请勿重复提交`);
     }
     return await this.redemptionCodeRepository.save(createRedemptionCodeDto);
   }
