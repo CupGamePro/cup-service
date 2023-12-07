@@ -25,22 +25,25 @@ export class MenuService {
   }
 
   /**
-   *
    * @description: 分页查询所有菜单
    * @return {*}
-   *
    */
   async findAll({
     pageSize,
     page,
-  }: PaginationDto): Promise<{ data: Menu[]; count: number }> {
+    condition,
+  }: PaginationDto): Promise<{ content: Menu[]; total: number }> {
+    console.log(page);
+    console.log(pageSize);
+
     const [data, count] = await this.menuRepository.findAndCount({
       order: { createTime: 'DESC' },
+      where: { isDelete: 0, ...(condition || {}) },
       skip: (page - 1) * pageSize,
-      take: pageSize * 1,
+      take: pageSize,
       cache: true,
     });
-    return { data, count };
+    return { content: data, total: count };
   }
 
   findOne(id: number) {

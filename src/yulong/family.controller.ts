@@ -13,9 +13,10 @@ import { CreateFamilyDto } from './dto/create-family.dto';
 import { UpdateFamilyDto } from './dto/update-family.dto';
 import { PaginationDto } from 'src/common/dto/pagination-dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BaseServiceName } from 'src/config';
 
 @ApiTags('家族管理')
-@Controller('family')
+@Controller(BaseServiceName + '/family')
 export class FamilyController {
   constructor(private readonly familyService: FamilyService) {}
 

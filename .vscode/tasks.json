@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "typescript",
+      "tsconfig": "tsconfig.json",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "group": "build",
+      "label": "tsc: build",
+      "options": {
+        "emit": "true",
+        "pretty": "true"
+      }
+    },
+    {
+      "type": "npm",
+      "script": "start:debug",
+      "problemMatcher": [],
+      "label": "yarn: start:debug",
+      "detail": "yarn: start:debug",
+      "dependsOn": [
+        "tsc: build"
+      ]
+    }
+  ]
+}

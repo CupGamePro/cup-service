@@ -14,36 +14,39 @@ import {
   Param,
   Delete,
   Query,
+  Logger,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from 'src/common/dto/pagination-dto';
+import { BaseServiceName } from 'src/config';
 
 @ApiTags('菜单')
-@Controller('menu')
+@Controller(BaseServiceName + '/menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
   @ApiOperation({
     summary: '新增菜单',
   })
-  @Post()
-  create(@Body() createMenuDto: CreateMenuDto) {
-    return this.menuService.create(createMenuDto);
+  @Post('createMenu')
+  create(@Body() menu: CreateMenuDto) {
+    console.log(menu);
+    return this.menuService.create(menu);
   }
 
   @ApiOperation({
     summary: '查询所有菜单',
   })
-  @Get()
-  async findAll(@Query() query: PaginationDto) {
-    const { data, count } = await this.menuService.findAll(query);
-    return {
-      content: data,
-      total: count,
-    };
+  @Post('lists')
+  async findAll(@Body() query: PaginationDto) {
+    console.log(query);
+
+    return await this.menuService.findAll(query);
   }
 
   @ApiOperation({

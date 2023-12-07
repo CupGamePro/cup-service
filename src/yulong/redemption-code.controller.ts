@@ -13,9 +13,10 @@ import { RedemptionCodeService } from './redemption-code.service';
 import { CreateRedemptionCodeDto } from './dto/create-redemption-code.dto';
 import { UpdateRedemptionCodeDto } from './dto/update-redemption-code.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BaseServiceName } from 'src/config';
 
 @ApiTags('兑换码管理')
-@Controller('redemption-code')
+@Controller(BaseServiceName + '/redemption-code')
 export class RedemptionCodeController {
   constructor(private readonly redemptionCodeService: RedemptionCodeService) {}
 
