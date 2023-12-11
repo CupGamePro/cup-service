@@ -2,29 +2,29 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dto/pagination-dto';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class RolesService {
   constructor(
     @InjectRepository(Role)
-    private userRepository: Repository<Role>,
+    private roleRepository: Repository<Role>,
   ) {}
 
   /**
-   * @description 创建用户
-   * @param CreateRoleDto 用户
+   * @description 创建角色
+   * @param CreateRoleDto 角色
    * @returns
    */
   async create(CreateRoleDto: CreateRoleDto): Promise<Role> {
-    const user = this.userRepository.create(CreateRoleDto);
-    return await this.userRepository.save(user);
+    const role = this.roleRepository.create(CreateRoleDto);
+    return await this.roleRepository.save(role);
   }
 
   /**
-   * 分页查询所有用户
+   * 分页查询所有角色
    * @param param0 分页参数
    * @returns
    */
@@ -33,9 +33,18 @@ export class RolesService {
     page,
     condition,
   }: PaginationDto): Promise<{ content: Role[]; total: number }> {
-    const [data, count] = await this.userRepository.findAndCount({
+    const whereCondition = {
+      isDelete: 0,
+      ...Object.entries(condition).reduce((acc, [key, value]) => {
+        if (value !== null && value !== '') {
+          acc[key] = ILike(`%${value}%`);
+        }
+        return acc;
+      }, {}),
+    };
+    const [data, count] = await this.roleRepository.findAndCount({
       order: { createTime: 'DESC' },
-      where: { isDelete: 0, ...condition },
+      where: whereCondition,
       skip: (page - 1) * pageSize,
       take: pageSize * 1,
       cache: true,
@@ -44,12 +53,12 @@ export class RolesService {
   }
 
   /**
-   * 查询用户
+   * 查询角色
    * @param uuid
    * @returns
    */
   async findOne(uuid: string): Promise<Role> {
-    const result = await this.userRepository.findOne({ where: { uuid } });
+    const result = await this.roleRepository.findOne({ where: { uuid } });
     if (!result) {
       throw new NotFoundException('查询不到此记录');
     }
@@ -57,30 +66,30 @@ export class RolesService {
   }
 
   /**
-   * @description: 更新用户
+   * @description: 更新角色
    * @param {*}
    * @return {*}
    */
-  async update(user: UpdateRoleDto) {
-    const result = await this.userRepository.findOne({
-      where: { uuid: user.uuid },
+  async update(role: UpdateRoleDto) {
+    const result = await this.roleRepository.findOne({
+      where: { uuid: role.uuid },
     });
     if (!result) {
       throw new NotFoundException('更新失败');
     }
-    return await this.userRepository.update(user.uuid, user);
+    return await this.roleRepository.update(role.uuid, role);
   }
 
   /**
-   * @description: 删除用户
-   * @param uuid 用户uuid
+   * @description: 删除角色
+   * @param uuid 角色uuid
    * @returns
    */
   async remove(uuid: string) {
-    const result = await this.userRepository.findOne({ where: { uuid } });
+    const result = await this.roleRepository.findOne({ where: { uuid } });
     if (!result) {
       throw new NotFoundException('查询不到此记录');
     }
-    return await this.userRepository.update(uuid, { isDelete: 1 });
+    return await this.roleRepository.update(uuid, { isDelete: 1 });
   }
 }

@@ -2,6 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto {
+  @ApiProperty({ description: '工号', example: '20230923' })
+  code: string;
+
   @ApiProperty({ description: '用户名', example: 'Admin' })
   @IsNotEmpty({ message: '用户名不能为空' })
   username: string;

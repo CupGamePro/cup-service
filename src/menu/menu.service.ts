@@ -13,7 +13,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { UpdateMenuDto } from './dto/update-menu.dto';
 import { MenuListDto } from './dto/menu-list-info.dto';
@@ -25,11 +25,6 @@ export class MenuService {
     @InjectRepository(Menu)
     private menuRepository: Repository<Menu>,
   ) {}
-
-  private readonly STATUS = {
-    1: '启用',
-    2: '禁用',
-  };
 
   private readonly MENU_TYPE = {
     1: '目录',
@@ -62,9 +57,18 @@ export class MenuService {
     page,
     condition,
   }: PaginationDto): Promise<{ content: MenuListDto[]; total: number }> {
+    const whereCondition = {
+      isDelete: 0,
+      ...Object.entries(condition).reduce((acc, [key, value]) => {
+        if (value !== null && value !== '') {
+          acc[key] = ILike(`%${value}%`);
+        }
+        return acc;
+      }, {}),
+    };
     // 查询所有菜单数据
     const data = await this.menuRepository.find({
-      where: { isDelete: 0, ...(condition || {}) },
+      where: whereCondition,
       order: { sort: 'ASC' },
       cache: true,
     });
@@ -167,7 +171,6 @@ export class MenuService {
     const roots: MenuListDto[] = [];
     // 将所有菜单按照 ID 存储到 Map 中
     for (const item of data) {
-      item.statusName = this.STATUS[item.status];
       item.typeName = this.MENU_TYPE[item.type];
       map.set(item.uuid, { ...item, children: [] });
     }

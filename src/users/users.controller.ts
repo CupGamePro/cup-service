@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -48,7 +49,15 @@ export class UsersController {
   }
 
   @ApiOperation({
-    summary: '删除菜单',
+    summary: '更新用户状态',
+  })
+  @Patch('/updateStatus/:uuid')
+  updateStatus(@Param('uuid') uuid: string, @Query('status') status: number) {
+    return this.usersService.updateStatus(uuid, status);
+  }
+
+  @ApiOperation({
+    summary: '删除用户',
   })
   @Delete(':uuid')
   remove(@Param('uuid') uuid: string) {

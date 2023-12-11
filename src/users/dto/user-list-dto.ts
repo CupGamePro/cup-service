@@ -1,4 +1,6 @@
 export class UserListDto {
+  code: string;
+
   username: string;
 
   email: string;

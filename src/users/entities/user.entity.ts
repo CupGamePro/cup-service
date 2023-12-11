@@ -8,6 +8,13 @@ export class User extends CommonEntity {
     length: 255,
     nullable: false,
   })
+  code: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+  })
   username: string;
 
   @Column({

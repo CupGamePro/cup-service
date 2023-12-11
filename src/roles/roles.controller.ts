@@ -8,11 +8,11 @@ import {
   Delete,
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from 'src/common/dto/pagination-dto';
 import { BaseServiceName } from 'src/config';
+import { CreateRoleDto } from './dto/create-role.dto';
 
 @ApiTags('角色')
 @Controller(BaseServiceName + '/roles')
@@ -21,14 +21,14 @@ export class RolesController {
 
   @ApiOperation({ summary: '添加角色' })
   @Post()
-  create(@Body() CreateRoleDto: CreateRoleDto) {
-    return this.rolesService.create(CreateRoleDto);
+  create(@Body() role: CreateRoleDto) {
+    return this.rolesService.create(role);
   }
 
   @ApiOperation({ summary: '分页查询' })
   @Post('/list')
-  async findAll(@Body() user: PaginationDto) {
-    return await this.rolesService.findAll(user);
+  async findAll(@Body() role: PaginationDto) {
+    return await this.rolesService.findAll(role);
   }
 
   @ApiOperation({
@@ -43,8 +43,8 @@ export class RolesController {
     summary: '修改角色',
   })
   @Patch()
-  update(@Body() user: UpdateRoleDto) {
-    return this.rolesService.update(user);
+  update(@Body() role: UpdateRoleDto) {
+    return this.rolesService.update(role);
   }
 
   @ApiOperation({
