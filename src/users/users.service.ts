@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { PaginationDto } from 'src/common/dto/pagination-dto';
+import { UserListDto } from './dto/user-list-dto';
 
 @Injectable()
 export class UsersService {
@@ -12,6 +13,11 @@ export class UsersService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
+
+  private readonly GENDER_STATUS = {
+    male: '男',
+    female: '女',
+  };
 
   /**
    * @description 创建用户
@@ -32,7 +38,7 @@ export class UsersService {
     pageSize,
     page,
     condition,
-  }: PaginationDto): Promise<{ content: User[]; total: number }> {
+  }: PaginationDto): Promise<{ content: UserListDto[]; total: number }> {
     const [data, count] = await this.userRepository.findAndCount({
       order: { createTime: 'DESC' },
       where: { isDelete: 0, ...condition },
@@ -40,7 +46,14 @@ export class UsersService {
       take: pageSize * 1,
       cache: true,
     });
-    return { content: data, total: count };
+
+    const result = data.map((ele) => {
+      return {
+        ...ele,
+        genderName: this.GENDER_STATUS[ele.gender],
+      };
+    });
+    return { content: result, total: count };
   }
 
   /**
