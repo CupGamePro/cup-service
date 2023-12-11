@@ -1,11 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column } from 'typeorm';
 import { CommonEntity } from 'src/common/entities/common.entity';
 
 @Entity()
 export class Menu extends CommonEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
   @Column()
   name: string;
 
@@ -19,10 +16,13 @@ export class Menu extends CommonEntity {
   path: string;
 
   @Column()
-  level: string;
+  parentId: string;
 
   @Column()
-  type: string;
+  level: number;
+
+  @Column()
+  type: number;
 
   @Column()
   sort: number;
@@ -31,5 +31,5 @@ export class Menu extends CommonEntity {
   describe: string;
 
   @Column()
-  status: string;
+  status: number;
 }

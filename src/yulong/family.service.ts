@@ -94,8 +94,8 @@ export class FamilyService {
    * @param id
    * @returns
    */
-  async findOne(id: string): Promise<Family> {
-    const result = await this.familyRepository.findOne({ where: { id } });
+  async findOne(uuid: string): Promise<Family> {
+    const result = await this.familyRepository.findOne({ where: { uuid } });
     if (!result) {
       throw new NotFoundException('查询不到此记录');
     }
@@ -104,28 +104,28 @@ export class FamilyService {
 
   /**
    * 更新家族信息
-   * @param id
+   * @param uuid
    * @param updateFamilyDto
    * @returns
    */
-  async update(id: string, updateFamilyDto: UpdateFamilyDto) {
-    const result = await this.familyRepository.findOne({ where: { id } });
+  async update(uuid: string, updateFamilyDto: UpdateFamilyDto) {
+    const result = await this.familyRepository.findOne({ where: { uuid } });
     if (!result) {
       throw new NotFoundException('更新失败');
     }
-    return await this.familyRepository.update(id, updateFamilyDto);
+    return await this.familyRepository.update(uuid, updateFamilyDto);
   }
 
   /**
    * 删除家族信息
-   * @param id
+   * @param uuid
    * @returns
    */
-  async remove(id: string) {
-    const result = await this.familyRepository.findOne({ where: { id } });
+  async remove(uuid: string) {
+    const result = await this.familyRepository.findOne({ where: { uuid } });
     if (!result) {
       throw new NotFoundException('查询不到此记录');
     }
-    return await this.familyRepository.update(id, { isDelete: 1 });
+    return await this.familyRepository.update(uuid, { isDelete: 1 });
   }
 }

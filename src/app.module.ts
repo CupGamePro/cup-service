@@ -1,11 +1,12 @@
-import { ExceptionFilter, MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MgmtModule } from './mgmt/mgmt.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MenuModule } from './menu/menu.module';
 import { CommonModule } from './common/common.module';
-import { YulongModule } from './yulong/yulong.module';
+import { UsersModule } from './users/users.module';
+import { Module } from '@nestjs/common';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { YulongModule } from './yulong/yulong.module';
     }),
     MenuModule,
     CommonModule,
-    YulongModule,
+    UsersModule,
+    RolesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

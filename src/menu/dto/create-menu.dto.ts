@@ -23,13 +23,14 @@ export class CreateMenuDto {
   @ApiProperty({ example: '/menu/pageList' })
   path?: string;
 
-  @ApiProperty({ example: '0' })
-  @IsNotEmpty()
-  level?: string;
+  level?: number;
 
-  @ApiProperty({ example: '菜单' })
+  @ApiProperty({ example: '' })
+  parentId?: string;
+
+  @ApiProperty({ example: 1 })
   @IsNotEmpty()
-  type?: string;
+  type?: number;
 
   @ApiProperty({ example: 1 })
   sort?: number;
@@ -37,6 +38,6 @@ export class CreateMenuDto {
   @ApiProperty({ example: '菜单名称' })
   describe?: string;
 
-  @ApiProperty({ example: '启用' })
-  status?: string;
+  @ApiProperty({ example: 1 })
+  status?: number;
 }

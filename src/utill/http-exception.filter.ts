@@ -7,8 +7,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp(); // 获取请求上下文
     const response = ctx.getResponse(); // 获取 response 对象
     const status = exception.getStatus(); // 获取异常的状态码
-    console.log(exception.getResponse()['message']);
-
+    console.log('响应异常' + exception.getResponse());
+    console.log('真实异常' + exception);
     response.status(status).json({
       code: status,
       timestamp: new Date().getTime(),

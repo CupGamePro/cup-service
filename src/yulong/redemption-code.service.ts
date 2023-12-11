@@ -78,31 +78,31 @@ export class RedemptionCodeService {
    * @param updateRedemptionCodeDto
    * @returns
    */
-  async update(id: string, updateRedemptionCodeDto: UpdateRedemptionCodeDto) {
+  async update(uuid: string, updateRedemptionCodeDto: UpdateRedemptionCodeDto) {
     const result = await this.redemptionCodeRepository.findOne({
-      where: { id },
+      where: { uuid },
     });
     if (!result) {
       throw new NotFoundException('更新失败');
     }
     return await this.redemptionCodeRepository.update(
-      id,
+      uuid,
       updateRedemptionCodeDto,
     );
   }
 
   /**
    * 删除记录
-   * @param id
+   * @param uuid
    * @returns
    */
-  async remove(id: string) {
+  async remove(uuid: string) {
     const result = await this.redemptionCodeRepository.findOne({
-      where: { id },
+      where: { uuid },
     });
     if (!result) {
       throw new NotFoundException('查询不到此记录');
     }
-    return await this.redemptionCodeRepository.update(id, { isDelete: 1 });
+    return await this.redemptionCodeRepository.update(uuid, { isDelete: 1 });
   }
 }

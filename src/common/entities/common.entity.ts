@@ -7,7 +7,7 @@ import {
 
 export abstract class CommonEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  uuid: string;
 
   @CreateDateColumn({ name: 'create_time', type: 'timestamp' })
   createTime: Date;

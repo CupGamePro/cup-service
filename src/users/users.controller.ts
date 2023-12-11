@@ -1,0 +1,57 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BaseServiceName } from 'src/config';
+import { PaginationDto } from 'src/common/dto/pagination-dto';
+
+@ApiTags('用户')
+@Controller(BaseServiceName + '/users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+  @ApiOperation({ summary: '添加用户' })
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
+  }
+
+  @ApiOperation({ summary: '分页查询' })
+  @Post('/list')
+  async findAll(@Body() user: PaginationDto) {
+    return await this.usersService.findAll(user);
+  }
+
+  @ApiOperation({
+    summary: '查询用户',
+  })
+  @Get(':uuid')
+  findOne(@Param('uuid') uuid: string) {
+    return this.usersService.findOne(uuid);
+  }
+
+  @ApiOperation({
+    summary: '修改用户',
+  })
+  @Patch()
+  update(@Body() user: UpdateUserDto) {
+    return this.usersService.update(user);
+  }
+
+  @ApiOperation({
+    summary: '删除菜单',
+  })
+  @Delete(':uuid')
+  remove(@Param('uuid') uuid: string) {
+    return this.usersService.remove(uuid);
+  }
+}

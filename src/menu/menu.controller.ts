@@ -14,9 +14,6 @@ import {
   Param,
   Delete,
   Query,
-  Logger,
-  HttpCode,
-  HttpStatus,
 } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
@@ -35,7 +32,6 @@ export class MenuController {
   })
   @Post('createMenu')
   create(@Body() menu: CreateMenuDto) {
-    console.log(menu);
     return this.menuService.create(menu);
   }
 
@@ -44,9 +40,15 @@ export class MenuController {
   })
   @Post('lists')
   async findAll(@Body() query: PaginationDto) {
-    console.log(query);
-
     return await this.menuService.findAll(query);
+  }
+
+  @ApiOperation({
+    summary: '查询所有目录',
+  })
+  @Get('catalogs')
+  async findAllCatalog() {
+    return await this.menuService.findAllCatalog();
   }
 
   @ApiOperation({
@@ -60,16 +62,24 @@ export class MenuController {
   @ApiOperation({
     summary: '修改菜单',
   })
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
-    return this.menuService.update(+id, updateMenuDto);
+  @Patch()
+  update(@Body() menu: UpdateMenuDto) {
+    return this.menuService.update(menu);
+  }
+
+  @ApiOperation({
+    summary: '更新菜单状态',
+  })
+  @Patch('/updateStatus/:uuid')
+  updateStatus(@Param('uuid') uuid: string, @Query('status') status: number) {
+    return this.menuService.updateStatus(uuid, status);
   }
 
   @ApiOperation({
     summary: '删除菜单',
   })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.menuService.remove(+id);
+  @Delete(':uuid')
+  remove(@Param('uuid') uuid: string) {
+    return this.menuService.remove(uuid);
   }
 }
