@@ -1,16 +1,14 @@
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MgmtModule } from './mgmt/mgmt.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MenuModule } from './menu/menu.module';
-import { CommonModule } from './common/common.module';
-import { UsersModule } from './users/users.module';
+import { MenuModule } from './modules/menu.module';
+import { CommonModule } from './modules/common.module';
+import { UsersModule } from './modules/users.module';
 import { Module } from '@nestjs/common';
-import { RolesModule } from './roles/roles.module';
+import { RolesModule } from './modules/roles.module';
 
 @Module({
   imports: [
-    MgmtModule,
     TypeOrmModule.forRoot({
       type: 'mysql', //数据库类型
       username: 'root', //账号
@@ -24,6 +22,10 @@ import { RolesModule } from './roles/roles.module';
       retryAttempts: 10, //重试连接数据库的次数
       dateStrings: true,
       autoLoadEntities: true, //如果为true,将自动加载实体 forFeature()方法注册的每个实体都将自动添加到配置对象的实体数组中
+      extra: {
+        charset: 'utf8mb4',
+        collation: 'utf8mb4_general_ci',
+      },
     }),
     MenuModule,
     CommonModule,
