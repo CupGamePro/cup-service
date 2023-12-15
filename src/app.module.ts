@@ -25,6 +25,8 @@ import { RolesModule } from './modules/roles.module';
       extra: {
         charset: 'utf8mb4',
         collation: 'utf8mb4_general_ci',
+        connectTimeout: 10000, // 连接超时时间（毫秒）
+        acquireTimeout: 10000, // 获取连接超时时间（毫秒）
       },
     }),
     MenuModule,
