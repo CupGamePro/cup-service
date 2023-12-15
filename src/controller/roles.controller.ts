@@ -27,7 +27,7 @@ export class RolesController {
   }
 
   @ApiOperation({ summary: '分页查询' })
-  @Post('/lists')
+  @Post('/list')
   async findAll(@Body() role: PaginationDto) {
     return await this.rolesService.findAll(role);
   }

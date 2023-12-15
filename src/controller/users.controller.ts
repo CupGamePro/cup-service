@@ -9,11 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
-import { CreateUserDto } from '../dto/user/create-user.dto';
-import { UpdateUserDto } from '../dto/user/update-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { BaseServiceName } from 'src/config';
 import { PaginationDto } from '../dto/common/pagination-dto';
+import { UserBodyParamsDto } from 'src/dto/user/user-body-params.dto';
 
 @ApiTags('用户')
 @Controller(BaseServiceName + '/users')
@@ -22,8 +21,8 @@ export class UsersController {
 
   @ApiOperation({ summary: '添加用户' })
   @Post('create')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  create(@Body() user: UserBodyParamsDto) {
+    return this.usersService.create(user);
   }
 
   @ApiOperation({ summary: '分页查询' })
@@ -44,7 +43,7 @@ export class UsersController {
     summary: '修改用户',
   })
   @Patch()
-  update(@Body() user: UpdateUserDto) {
+  update(@Body() user: UserBodyParamsDto) {
     return this.usersService.update(user);
   }
 

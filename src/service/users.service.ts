@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from '../dto/user/create-user.dto';
-import { UpdateUserDto } from '../dto/user/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
@@ -8,6 +7,7 @@ import { PaginationDto } from '../dto/common/pagination-dto';
 import { UserListDto } from '../dto/user/user-list-dto';
 import { Role } from 'src/entities/role.entity';
 import { UserRole } from 'src/entities/user-role.entity';
+import { UserBodyParamsDto } from 'src/dto/user/user-body-params.dto';
 
 @Injectable()
 export class UsersService {
@@ -30,34 +30,48 @@ export class UsersService {
    * @param createUserDto 用户
    * @returns
    */
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    createUserDto.code = await this.generateEmployeeNumber();
-    const user = await this.userRepository.save(createUserDto);
-    await this.assignRolesToUser(user.uuid, createUserDto.roleIds);
+  async create(params: UserBodyParamsDto): Promise<User> {
+    params.user.code = await this.generateEmployeeNumber();
+    const user = await this.userRepository.save(params.user);
+    await this.assignRolesToUser(user.uuid, params.roleIds);
     return user;
   }
 
   async assignRolesToUser(userId: string, roleIds: string[]): Promise<User> {
+    // 查找用户对象
     const user = await this.userRepository.findOne({ where: { uuid: userId } });
     if (!user) {
       throw new Error('User not found');
     }
 
+    // 查找角色对象，并检查是否所有角色都存在
     const roles = await this.roleRepository.findByIds(roleIds);
     if (roles.length !== roleIds.length) {
       throw new Error('One or more roles not found');
     }
 
-    const userRoles = roles.map((role) => {
+    // 查找所有与该用户相关的用户角色关系记录
+    const userRoles = await this.userRoleRepository.find({
+      where: { user: user },
+    });
+
+    await Promise.all(
+      userRoles.map((userRole) =>
+        this.userRoleRepository.delete(userRole.uuid),
+      ),
+    );
+
+    // 创建新的用户角色关系对象，并将其保存到数据库中
+    const newUserRoles = roles.map((role) => {
       const userRole = new UserRole();
       userRole.user = user;
       userRole.role = role;
       return userRole;
     });
+    await this.userRoleRepository.save(newUserRoles);
 
-    await this.userRoleRepository.save(userRoles);
-
-    user.userRoles = userRoles;
+    // 更新用户对象的userRoles属性为新的用户角色关系列表，并将更新后的用户对象保存到数据库中
+    user.userRoles = [...newUserRoles];
     return this.userRepository.save(user);
   }
 
@@ -97,6 +111,7 @@ export class UsersService {
         return {
           ...user,
           roles: userRoles.map((userRole) => userRole.role),
+          roleIds: userRoles.map((userRole) => userRole.role.uuid),
           genderName: this.GENDER_STATUS[user.gender],
         };
       }),
@@ -123,13 +138,16 @@ export class UsersService {
    * @param {*}
    * @return {*}
    */
-  async update(user: UpdateUserDto) {
+  async update(updateUser: UserBodyParamsDto) {
+    const user = updateUser.user;
+    const roleIds = updateUser.roleIds;
     const result = await this.userRepository.findOne({
       where: { uuid: user.uuid },
     });
     if (!result) {
       throw new NotFoundException('更新失败');
     }
+    await this.assignRolesToUser(user.uuid, roleIds);
     return await this.userRepository.update(user.uuid, user);
   }
 

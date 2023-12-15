@@ -86,6 +86,28 @@ export class MenuService {
   }
 
   /**
+   * @description: 查询所有菜单
+   * @return {*}
+   */
+  async findAllMenu(): Promise<MenuListDto[]> {
+    const whereCondition = {
+      isDelete: 0,
+      status: 1,
+    };
+    // 查询所有菜单数据
+    const data = await this.menuRepository.find({
+      where: whereCondition,
+      order: { sort: 'ASC' },
+      cache: true,
+    });
+
+    // 将所有菜单数据转换为树形结构
+    const roots = this.buildTree(data);
+
+    return roots;
+  }
+
+  /**
    * @description: 查询所有目录
    * @returns {Promise<MenuListDto[]>}
    */

@@ -36,4 +36,6 @@ export class CreateUserDto {
 
   @ApiProperty({ description: '角色', example: [] })
   roleIds: string[];
+
+  uuid?: string;
 }

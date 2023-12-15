@@ -16,6 +16,9 @@ export class Menu extends CommonEntity {
   path: string;
 
   @Column()
+  component: string;
+
+  @Column()
   parentId: string;
 
   @Column()

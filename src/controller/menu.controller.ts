@@ -30,17 +30,25 @@ export class MenuController {
   @ApiOperation({
     summary: '新增菜单',
   })
-  @Post('createMenu')
+  @Post('create')
   create(@Body() menu: CreateMenuDto) {
     return this.menuService.create(menu);
   }
 
   @ApiOperation({
-    summary: '查询所有菜单',
+    summary: '分页查询所有菜单',
   })
-  @Post('lists')
+  @Post('list')
   async findAll(@Body() query: PaginationDto) {
     return await this.menuService.findAll(query);
+  }
+
+  @ApiOperation({
+    summary: '查询所有菜单',
+  })
+  @Get('sysmenu')
+  async findAllMenu() {
+    return await this.menuService.findAllMenu();
   }
 
   @ApiOperation({
