@@ -10,7 +10,7 @@ import { AppModule } from './app.module';
 import { generateDocument } from './doc';
 import { ValidationPipe } from '@nestjs/common';
 import { GlobalResponseInterceptor } from './utill/response';
-import { HttpExceptionFilter } from './utill/http-exception.filter';
+import { AllExceptionsFilter } from './utill/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,7 +18,7 @@ async function bootstrap() {
   generateDocument(app);
 
   app.useGlobalInterceptors(new GlobalResponseInterceptor());
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   // 将全局的 ValidationPipe 应用于应用程序
   app.useGlobalPipes(new ValidationPipe());

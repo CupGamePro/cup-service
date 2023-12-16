@@ -23,6 +23,8 @@ export class GlobalResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((e) => {
         const res = context.switchToHttp().getResponse();
+        console.log(res);
+
         if (res.statusCode <= 201) {
           return {
             data: e,
@@ -32,6 +34,8 @@ export class GlobalResponseInterceptor implements NestInterceptor {
             success: true,
           };
         } else {
+          console.log(e);
+
           throw e;
         }
       }),
