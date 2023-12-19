@@ -22,7 +22,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       message:
         exception instanceof HttpException
-          ? exception.getResponse()
+          ? exception.getResponse()['message']
           : 'Internal Server Error',
       success: false,
     });

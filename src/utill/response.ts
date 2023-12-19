@@ -10,9 +10,6 @@ import {
   ExecutionContext,
   NestInterceptor,
   CallHandler,
-  ExceptionFilter,
-  ArgumentsHost,
-  HttpException,
 } from '@nestjs/common';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -23,19 +20,16 @@ export class GlobalResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((e) => {
         const res = context.switchToHttp().getResponse();
-        console.log(res);
-
         if (res.statusCode <= 201) {
           return {
             data: e,
             code: 200,
-            timestamp: new Date().getTime(),
-            message: 'success',
+            timestamp: new Date().toISOString(),
+            message: '操作成功',
             success: true,
           };
         } else {
           console.log(e);
-
           throw e;
         }
       }),

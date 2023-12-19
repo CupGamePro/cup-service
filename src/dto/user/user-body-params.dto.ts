@@ -1,6 +1,6 @@
-import { CreateUserDto } from './create-user.dto';
+import { UpdateUserDto } from './update-user.dto';
 
 export class UserBodyParamsDto {
-  user: CreateUserDto;
+  user: UpdateUserDto;
   roleIds: string[];
 }

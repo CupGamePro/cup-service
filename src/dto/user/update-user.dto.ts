@@ -16,4 +16,6 @@ export class UpdateUserDto {
   gender: string;
 
   status: number;
+
+  code: string;
 }
