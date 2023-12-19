@@ -34,7 +34,8 @@ export class CommonService {
     return {
       message: '登录成功',
       token: this.JwtService.sign({
-        userUuid: userEntity.uuid,
+        uuid: userEntity.uuid,
+        username: userEntity.username,
       }),
     };
   }
@@ -44,8 +45,7 @@ export class CommonService {
    * @param token token
    * @returns
    */
-  async getUserInfo(token) {
-    const { userUuid } = this.JwtService.decode(token);
+  async getUserInfo(userUuid) {
     const userEntity = await this.userRepository.findOne({
       where: {
         uuid: userUuid,

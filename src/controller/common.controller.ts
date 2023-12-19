@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Headers } from '@nestjs/common';
+import { Body, Controller, Get, Post, Headers, Req } from '@nestjs/common';
 import { CommonService } from '../service/common.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from 'src/dto/common/login.dto';
@@ -22,10 +22,8 @@ export class CommonController {
     summary: '获取用户信息',
   })
   @Get('getUserInfo')
-  getUserInfo(@Headers('authorization') authorization: string) {
-    console.log(authorization);
-
-    const token = authorization.split(' ')[1]; // 提取 token 的语法
-    return this.commonService.getUserInfo(token);
+  getUserInfo(@Req() request: Request) {
+    const userUuid = request['user'].uuid || '';
+    return this.commonService.getUserInfo(userUuid);
   }
 }
