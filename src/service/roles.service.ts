@@ -47,7 +47,6 @@ export class RolesService {
       where: whereCondition,
       skip: (page - 1) * pageSize,
       take: pageSize * 1,
-      cache: true,
     });
     return { content: data, total: count };
   }

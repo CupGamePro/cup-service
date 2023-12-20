@@ -70,7 +70,6 @@ export class MenuService {
     const data = await this.menuRepository.find({
       where: whereCondition,
       order: { sort: 'ASC' },
-      cache: true,
     });
 
     // 将所有菜单数据转换为树形结构
@@ -98,7 +97,6 @@ export class MenuService {
     const data = await this.menuRepository.find({
       where: whereCondition,
       order: { sort: 'ASC' },
-      cache: true,
     });
 
     // 将所有菜单数据转换为树形结构
@@ -128,6 +126,8 @@ export class MenuService {
    * @return {*}
    */
   async update(menu: UpdateMenuDto) {
+    console.log('menu', menu);
+
     const result = await this.menuRepository.findOne({
       where: { uuid: menu.uuid },
     });
@@ -188,7 +188,7 @@ export class MenuService {
    * @param data 菜单数据
    * @return {*}
    */
-  private buildTree(data: MenuListDto[]): MenuListDto[] {
+  buildTree(data: MenuListDto[]): MenuListDto[] {
     const map = new Map<string, MenuListDto>();
     const roots: MenuListDto[] = [];
     // 将所有菜单按照 ID 存储到 Map 中

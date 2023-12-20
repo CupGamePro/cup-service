@@ -14,13 +14,15 @@ import {
   Param,
   Delete,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { MenuService } from '../service/menu.service';
 import { CreateMenuDto } from '../dto/menu/create-menu.dto';
 import { UpdateMenuDto } from '../dto/menu/update-menu.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from '../dto/common/pagination-dto';
-import { SERVICE_NAME } from 'src/config';
+import { SERVICE_NAME } from 'src/utill/config';
+import { CurrentUserInterceptor } from 'src/utill/current.user.decorator';
 
 @ApiTags('菜单')
 @Controller(SERVICE_NAME + '/menu')
@@ -30,6 +32,7 @@ export class MenuController {
   @ApiOperation({
     summary: '新增菜单',
   })
+  @UseInterceptors(CurrentUserInterceptor)
   @Post('create')
   create(@Body() menu: CreateMenuDto) {
     return this.menuService.create(menu);
@@ -70,6 +73,7 @@ export class MenuController {
   @ApiOperation({
     summary: '修改菜单',
   })
+  @UseInterceptors(CurrentUserInterceptor)
   @Patch()
   update(@Body() menu: UpdateMenuDto) {
     return this.menuService.update(menu);
@@ -78,6 +82,7 @@ export class MenuController {
   @ApiOperation({
     summary: '更新菜单状态',
   })
+  @UseInterceptors(CurrentUserInterceptor)
   @Patch('/updateStatus/:uuid')
   updateStatus(@Param('uuid') uuid: string, @Query('status') status: number) {
     return this.menuService.updateStatus(uuid, status);
@@ -86,6 +91,7 @@ export class MenuController {
   @ApiOperation({
     summary: '删除菜单',
   })
+  @UseInterceptors(CurrentUserInterceptor)
   @Delete(':uuid')
   remove(@Param('uuid') uuid: string) {
     return this.menuService.remove(uuid);

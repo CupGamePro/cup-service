@@ -7,8 +7,9 @@
  */
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
+import { BaseDto } from '../base-dto';
 
-export class CreateMenuDto {
+export class CreateMenuDto extends BaseDto {
   @ApiProperty({ description: '菜单名称', example: '菜单名称' })
   @IsNotEmpty({ message: '菜单名称不能为空' })
   name?: string;

@@ -26,6 +26,18 @@ export abstract class CommonEntity {
   })
   updateTime: Date;
 
+  @Column({
+    name: 'created_by',
+    type: 'varchar',
+  })
+  createdBy: string;
+
+  @Column({
+    name: 'updated_by',
+    type: 'varchar',
+  })
+  updatedBy: string;
+
   @Column({ type: 'int', default: 0 })
   isDelete: number;
 }
