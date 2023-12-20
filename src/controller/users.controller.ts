@@ -10,12 +10,12 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { BaseServiceName } from 'src/config';
+import { SERVICE_NAME } from 'src/config';
 import { PaginationDto } from '../dto/common/pagination-dto';
 import { UserBodyParamsDto } from 'src/dto/user/user-body-params.dto';
 
 @ApiTags('用户')
-@Controller(BaseServiceName + '/users')
+@Controller(SERVICE_NAME + '/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

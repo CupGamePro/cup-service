@@ -12,11 +12,11 @@ import { RolesService } from '../service/roles.service';
 import { UpdateRoleDto } from '../dto/role/update-role.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from '../dto/common/pagination-dto';
-import { BaseServiceName } from 'src/config';
+import { SERVICE_NAME } from 'src/config';
 import { CreateRoleDto } from '../dto/role/create-role.dto';
 
 @ApiTags('角色')
-@Controller(BaseServiceName + '/roles')
+@Controller(SERVICE_NAME + '/roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 

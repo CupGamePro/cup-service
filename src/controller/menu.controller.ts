@@ -20,10 +20,10 @@ import { CreateMenuDto } from '../dto/menu/create-menu.dto';
 import { UpdateMenuDto } from '../dto/menu/update-menu.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginationDto } from '../dto/common/pagination-dto';
-import { BaseServiceName } from 'src/config';
+import { SERVICE_NAME } from 'src/config';
 
 @ApiTags('菜单')
-@Controller(BaseServiceName + '/menu')
+@Controller(SERVICE_NAME + '/menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
