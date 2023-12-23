@@ -29,12 +29,14 @@ export abstract class CommonEntity {
   @Column({
     name: 'created_by',
     type: 'varchar',
+    default: null,
   })
   createdBy: string;
 
   @Column({
     name: 'updated_by',
     type: 'varchar',
+    default: null,
   })
   updatedBy: string;
 
