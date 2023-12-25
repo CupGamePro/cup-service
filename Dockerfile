@@ -1,5 +1,5 @@
 # 使用官方 Node.js 基础镜像
-FROM node:14.17.3-alpine
+FROM node:14
 
 # 设置工作目录
 WORKDIR /app
@@ -20,4 +20,4 @@ RUN npm run build
 ENV NODE_ENV production
 
 # 启动应用程序
-CMD ["npm", "run", "serve"]
+CMD ["npm", "run", "start"]
