@@ -15,7 +15,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
-    console.log(exception);
+    console.log('异常信息=====================》', exception);
 
     response.status(status).json({
       code: status,
