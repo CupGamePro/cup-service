@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guard/jwt-auth.grard';
 import { AuthModule } from './modules/auth.module';
 import { PlatformApiModule } from './modules/platformApi.module';
+import { PipelineModule } from './modules/pipeline.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { PlatformApiModule } from './modules/platformApi.module';
     RolesModule,
     AuthModule,
     PlatformApiModule,
+    PipelineModule,
   ],
   controllers: [AppController],
   providers: [
